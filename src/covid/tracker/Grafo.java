@@ -191,6 +191,18 @@ public class Grafo {
             v = (Vertice) v.getLink();
         }
     }
+    
+    public boolean todosInfectados(){
+        Vertice v = vertices;
+        while(v!=null){
+            if(!v.isInfectado()){
+                return false;
+               
+            }
+             v=(Vertice) v.link;
+        }
+        return true;
+    }
 
     public void mostrarInfectados() {
         Vertice v = vertices;
