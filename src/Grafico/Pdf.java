@@ -39,45 +39,9 @@ public class Pdf {
             // documento.addCreator("Código Xules");
 
             PdfPTable tabla = new PdfPTable(v.cantidadDeVertices(v) + 1);
-            Vertice v2 = v;
+              Vertice v2 = v;
             PdfPCell c = new PdfPCell(new Paragraph(""));
             tabla.addCell(c);
-            while (v2 != null) {
-
-                c = new PdfPCell(new Paragraph("" + v2.getId()));
-                tabla.addCell(c);
-
-                v2 = (Vertice) v2.getLink();
-            }
-
-            v2 = v;
-            int contadorT = v.cantidadDeVertices(v);
-            int contadorN = 0;
-            while (v2 != null) {
-
-                c = new PdfPCell(new Paragraph("" + v2.getId()));
-                tabla.addCell(c);
-
-                Arista a = v2.getAristas();
-                while (contadorN < contadorT) {
-                    if (a != null) {
-                        if (a.getId() == contadorN) {
-                            c = new PdfPCell(new Paragraph("" + 1));
-                            tabla.addCell(c);
-                        } else {
-                            c = new PdfPCell(new Paragraph("" + 0));
-                            tabla.addCell(c);
-                        }
-                         a = a.getLink();
-                    }
-
-                    contadorN++;
-                   
-                }
-                v2 = (Vertice) v2.getLink();
-            }
-//             
-
             documento.add(tabla);
             documento.close();
         } catch (DocumentException ex) {
@@ -88,8 +52,19 @@ public class Pdf {
 
     }
 
-    public void falta(Vertice v) {
-
+    public boolean[] falta(Vertice v) {
+        boolean [] arreglo = new boolean[v.cantidadDeVertices(v)]; 
+        System.out.println(v.cantidadDeVertices(v));
+            Arista a = v.getAristas();
+            int c = 0;
+           for (int i = 0; i < arreglo.length; i++) {
+               if(i==a.getId()&&a!=null){
+                   arreglo[i]=true;
+                   a=a.getLink();
+               }
+            
+        }
+        return arreglo;
     }
 
 }
