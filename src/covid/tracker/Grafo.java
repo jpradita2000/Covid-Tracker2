@@ -18,11 +18,11 @@ import java.util.Scanner;
  * @author JPPM
  */
 public class Grafo {
-
+    
     private Vertice vertices;
     //  private Vertice verticeP;
     private boolean paciente0;
-    private int numVertices = 5;
+    private int numVertices;
     private int configuracion;
     private int iteracion;
     private float PROBABILIDAD_PACIENTE_CERO;
@@ -38,15 +38,15 @@ public class Grafo {
         configuracion = 0;
         iteracion = 0;
         PROBABILIDAD_MASCARILLA = 1 / 2;
-        PROBABILIDAD_ARISTA = 1 / 4;
+        PROBABILIDAD_ARISTA = 0.69f;
         PROBABILIDAD_INFECTADO = 1 / 2;
         PROTECCCION_MASCARILLA = (float) 0.3;
     }
 
     public void generarGrafo() {
         Random rand = new Random();
-        PROBABILIDAD_PACIENTE_CERO = 1 - 1 / numVertices;
-
+       // PROBABILIDAD_PACIENTE_CERO = 1 - 1 / numVertices;
+           PROBABILIDAD_PACIENTE_CERO = 0.4f;
         // crear vertice inicial
         if (numVertices > 0) {
             vertices = new Vertice();
@@ -83,7 +83,7 @@ public class Grafo {
                 }
             }
 
-            // si no posee ninguna arista, se le añade el nodo siguiente
+             //si no posee ninguna arista, se le añade el nodo siguiente
             if (v1.getAristas() == null) {
                 if (v1.getLink() != null) {
                     v1.addArista(v1.getLink().getId());
@@ -111,8 +111,39 @@ public class Grafo {
             vertices.setInfectado(true);
             paciente0 = true;
         }
+//        if(!todosConectados()){
+//            Random r = new Random();
+//            int Low = 0;
+//            int High = vertices.cantidadDeVertices(vertices);
+//            do{
+//             int Result = r.nextInt(High-Low) + Low;    
+//            }while(result!=);
+//            
+//            vertices.getId(result)
+        //}
+        
 
     }
+//    public boolean  todosConectados(){
+//        
+//        Vertice v1 = vertices;
+//        boolean arreglo [] = new boolean [v1.cantidadDeVertices(v1)];
+//        while(v1 != null){
+//            Arista a = v1.getAristas();
+//            while(a!=null){
+//                arreglo[a.getId()]=true;
+//                a=a.getLink();
+//            }
+//            v1=(Vertice) v1.getLink();
+//        }
+//        for (int i = 0; i < arreglo.length; i++) {
+//            if(arreglo[i]==false){
+//                return false;
+//            }
+//        }
+//        return true;
+//        
+//    }
 
     public void aplicarMascarillaAleatorio() {
         Vertice v1 = vertices;
@@ -234,11 +265,10 @@ public class Grafo {
         boolean primero=true;
         Scanner lectura  = new Scanner(f);
         PrintWriter pw = new PrintWriter(f);
-       
         int i=0;
         Vertice.setIdGen(0);
         while(lectura.hasNext()){
-             String linea = lectura.nextLine();
+            String linea = lectura.nextLine();
             linea = linea.trim();
             char array[] = linea.toCharArray();
             if(primero){
@@ -254,6 +284,7 @@ public class Grafo {
                 
                 if(array[j]!=','){
                     vertices.addArista(array[j]);
+                    
                 }
             }
             

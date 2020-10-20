@@ -21,9 +21,11 @@ import covid.tracker.Arista;
 public class Pdf {
 
     Vertice v;
-
+    PdfPTable tabla;
+    PdfPCell c;
     public Pdf(Vertice v) {
         this.v = v;
+         tabla = new PdfPTable(v.cantidadDeVertices(v) + 1);
     }
 
     public void generarMatriz() {
@@ -38,10 +40,24 @@ public class Pdf {
             documento.addAuthor("Juan Pablo Prada , Luis Felpe Evilla , Brancys");
             // documento.addCreator("Código Xules");
 
-            PdfPTable tabla = new PdfPTable(v.cantidadDeVertices(v) + 1);
-              Vertice v2 = v;
-            PdfPCell c = new PdfPCell(new Paragraph(""));
+            
+            Vertice v2 = v;
+             c = new PdfPCell(new Paragraph(""));
             tabla.addCell(c);
+             while(v2!=null){
+                   c = new PdfPCell(new Paragraph(""+v2.getId()));
+                   tabla.addCell(c);
+                   v2=(Vertice) v2.getLink();
+             }
+             v2=v;
+             boolean[][] matrizF = matrizACopiar();
+             while(v2!=null){
+                 c = new PdfPCell(new Paragraph(""+v2.getId()));
+                 tabla.addCell(c);
+                 Arista a = v2.getAristas();
+                 asegurar(v2.getId(),v2.cantidadDeVertices(a), matrizF);
+                 v2=(Vertice) v2.getLink();
+             }
             documento.add(tabla);
             documento.close();
         } catch (DocumentException ex) {
@@ -65,6 +81,39 @@ public class Pdf {
             
         }
         return arreglo;
+    }
+    public boolean[][] matrizACopiar(){
+        boolean [][] M = new boolean[20][20];
+         Vertice v2 = v;
+        for (int i = 0; i < v.cantidadDeVertices(v); i++) {
+                v2.getNodo(i);
+                Arista a = v2.getAristas();
+            for (int j = 0; j < v.cantidadDeVertices(v); j++) {
+                  if(a.getId()==j){
+                      M[i][j]=true;
+                      a=a.getLink();
+                  }else{
+                      M[i][j]=false;
+                  }
+            }
+            
+        }
+        return M;
+    }
+    public void asegurar(int f , int c,boolean M[][]){
+        int s = 0;
+        
+        while(s<c){
+           if(M[f][s]){
+                 this.c = new PdfPCell(new Paragraph(""+1));
+                 tabla.addCell(this.c);
+           }else{
+               this.c = new PdfPCell(new Paragraph(""+0));
+               tabla.addCell(this.c);
+           }      
+            s++;
+        }
+           
     }
 
 }
